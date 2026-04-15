@@ -1,0 +1,104 @@
+'use client'
+
+import { QRCodeCanvas } from 'qrcode.react'
+import { useRef, useMemo } from 'react'
+import { encodeDevicePayload } from '@/lib/storage'
+import type { Device } from '@/lib/storage'
+
+interface QRCodeGeneratorProps {
+  device: Device
+  isConfirmed: boolean
+}
+
+export function QRCodeGenerator({ device, isConfirmed }: QRCodeGeneratorProps) {
+  const qrRef = useRef<HTMLDivElement>(null)
+
+  /**
+   * QR encodes a full public URL.
+   * - In production (Vercel): uses NEXT_PUBLIC_APP_URL (e.g. https://evara.vercel.app)
+   * - In local dev: uses window.location.origin (localhost — only works on same machine)
+   *
+   * When a phone scans the QR after Vercel deployment, it opens:
+   *   https://your-app.vercel.app/device/view?p={encoded_payload}
+   * That page decodes the payload and shows the device info — no database needed.
+   */
+  const qrValue = useMemo(() => {
+    const appUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000')
+
+    const payload = encodeDevicePayload(device)
+    return `${appUrl}/device/view?p=${payload}`
+  }, [device])
+
+  const downloadQRAsPNG = () => {
+    const canvas = qrRef.current?.querySelector('canvas')
+    if (canvas) {
+      const dataUrl = canvas.toDataURL('image/png', 1.0)
+      const link = document.createElement('a')
+      const fileName = device.name ? `${device.name.replace(/\s+/g, '_')}.png` : 'NODE_ID.png'
+      link.href = dataUrl
+      link.download = fileName
+      link.click()
+    }
+  }
+
+  const isLocalDev = typeof window !== 'undefined' && window.location.hostname === 'localhost'
+
+  return (
+    <div className="glass-panel-gray rounded-[1.5rem] p-6 shadow-sm h-full flex flex-col items-center justify-between relative overflow-hidden border border-black/10">
+
+      {/* Header */}
+      <div className="w-full z-10">
+        <h3 className="font-bold text-xl text-black uppercase tracking-tight leading-none" style={{ fontFamily: 'Times New Roman, serif' }}>DEVICE QR</h3>
+        {isLocalDev && (
+          <p className="text-[8px] text-black/30 uppercase tracking-widest mt-1 font-bold">
+            ⚠ Deploy to Vercel for scannable QR
+          </p>
+        )}
+      </div>
+
+      {/* QR Display */}
+      <div className="relative flex-1 flex items-center justify-center w-full my-3">
+        <div
+          ref={qrRef}
+          className="bg-white p-6 rounded-[2rem] border border-black/5 shadow-2xl transition-all duration-300"
+        >
+          <QRCodeCanvas
+            value={qrValue}
+            size={280}
+            level="H"
+            includeMargin={true}
+            bgColor="#ffffff"
+            fgColor="#000000"
+            imageSettings={{
+              src: "/evara-logo.png",
+              x: undefined,
+              y: undefined,
+              height: 40,
+              width: 40,
+              excavate: true,
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Action */}
+      <div className="w-full pt-4">
+        {isConfirmed ? (
+          <button
+            onClick={downloadQRAsPNG}
+            className="w-full flex items-center justify-center gap-3 bg-black text-white py-3 rounded-xl text-[13px] font-bold uppercase tracking-[0.5em] transition-all hover:bg-slate-900 shadow-xl active:scale-95"
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>download</span>
+            EXPORT(.PNG)
+          </button>
+        ) : (
+          <div className="w-full flex items-center justify-center py-3 text-[10px] font-bold text-black/30 uppercase tracking-[0.4em] border-2 border-dashed border-black/10 rounded-xl">
+            AWAITING VERIFICATION
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
