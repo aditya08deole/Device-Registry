@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  images: {
+    remotePatterns: [],
+    formats: ['image/webp'],
+  },
+}
 
 export default nextConfig

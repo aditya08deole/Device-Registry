@@ -2,7 +2,9 @@
 
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
+import Image from 'next/image'
 import { decodeDevicePayload } from '@/lib/storage'
+import { getDeviceImage } from '@/lib/device-images'
 import type { Device } from '@/lib/storage'
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; dot: string }> = {
@@ -80,34 +82,55 @@ function DeviceViewContent() {
   })
 
   return (
-    <main className="min-h-screen bg-white" style={{ fontFamily: 'Times New Roman, serif' }}>
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-white" style={{ fontFamily: 'Times New Roman, serif' }}>
       {/* Top Bar */}
-      <div className="w-full border-b border-black/5 px-6 py-4 flex items-center justify-between">
+      <div className="w-full border-b border-black/5 px-6 py-4 flex items-center justify-between bg-white/50 backdrop-blur-sm">
         <div className="flex items-center gap-3">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/evara-logo.png" alt="EvaraTech" className="h-7 w-auto object-contain" />
+          <Image
+            src="/evara-logo.png"
+            alt="EvaraTech"
+            width={32}
+            height={32}
+            className="h-8 w-auto object-contain"
+            priority
+          />
           <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-black/50">EvaraTech</span>
         </div>
         <span className="text-[9px] font-bold uppercase tracking-widest text-black/30">Device Scan</span>
       </div>
 
       {/* Hero */}
-      <div className="px-6 pt-10 pb-6 border-b border-black/5">
-        <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-black/30 mb-2">REGISTERED DEVICE</p>
-        <h1 className="text-4xl font-bold text-black uppercase tracking-tight leading-none">
-          {device.name || 'UNNAMED NODE'}
-        </h1>
-        <div className="mt-4 flex items-center gap-3">
-          <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest ${statusCfg.color}`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${statusCfg.dot}`}></span>
-            {statusCfg.label}
+      <div className="px-6 pt-10 pb-6 border-b border-black/5 bg-white/30">
+        <div className="flex flex-col md:flex-row gap-6 items-start">
+          <div className="w-full md:w-1/3">
+            <div className="aspect-square rounded-2xl overflow-hidden border border-black/10 shadow-xl bg-gray-50">
+              <Image
+                src={getDeviceImage(device.device_type)}
+                alt={device.device_type}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+            </div>
           </div>
-          <span className="text-[9px] font-bold text-black/20 uppercase tracking-widest font-mono">{device.device_id}</span>
+          <div className="flex-1">
+            <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-black/30 mb-2">REGISTERED DEVICE</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-black uppercase tracking-tight leading-none mb-4">
+              {device.name || 'UNNAMED NODE'}
+            </h1>
+            <div className="flex flex-wrap items-center gap-3">
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest ${statusCfg.color}`}>
+                <span className={`w-2 h-2 rounded-full ${statusCfg.dot}`}></span>
+                {statusCfg.label}
+              </div>
+              <span className="text-[10px] font-bold text-black/20 uppercase tracking-widest font-mono">{device.device_id}</span>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Fields */}
-      <div className="px-6 py-2">
+      <div className="px-6 py-4 max-w-4xl mx-auto">
         <Field label="Device Type" value={device.device_type} />
         {device.location && <Field label="Location" value={device.location} />}
         {device.latitude && device.longitude && (
@@ -118,10 +141,28 @@ function DeviceViewContent() {
       </div>
 
       {/* Footer */}
-      <div className="px-6 py-8 mt-4 border-t border-black/5 text-center">
-        <p className="text-[9px] font-bold text-black/20 uppercase tracking-[0.4em]">
-          Powered by EvaraTech Systems · All data is embedded in this QR · No external database
-        </p>
+      <div className="px-6 py-8 mt-4 border-t border-black/5 text-center space-y-4 max-w-4xl mx-auto">
+        <div className="space-y-2">
+          <a
+            href="https://evaratech.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[12px] font-bold text-black uppercase tracking-[0.3em] hover:text-black/70 transition-colors"
+          >
+            evaratech.com
+          </a>
+        </div>
+        <div className="space-y-1">
+          <p className="text-[10px] font-bold text-black/60 uppercase tracking-[0.2em]">
+            For any help or complaint
+          </p>
+          <a
+            href="tel:9130190160"
+            className="text-[14px] font-mono font-bold text-black uppercase tracking-wider hover:text-black/70 transition-colors"
+          >
+            9130190160
+          </a>
+        </div>
       </div>
     </main>
   )

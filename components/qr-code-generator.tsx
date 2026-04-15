@@ -36,7 +36,10 @@ export function QRCodeGenerator({ device, isConfirmed }: QRCodeGeneratorProps) {
     if (canvas) {
       const dataUrl = canvas.toDataURL('image/png', 1.0)
       const link = document.createElement('a')
-      const fileName = device.name ? `${device.name.replace(/\s+/g, '_')}.png` : 'NODE_ID.png'
+      const deviceType = device.device_type || 'Unknown'
+      const deviceId = device.device_id || 'NoID'
+      const nodeId = device.name || 'NoNode'
+      const fileName = `${deviceType}_${deviceId}_${nodeId}.png`
       link.href = dataUrl
       link.download = fileName
       link.click()
@@ -62,7 +65,7 @@ export function QRCodeGenerator({ device, isConfirmed }: QRCodeGeneratorProps) {
       <div className="relative flex-1 flex items-center justify-center w-full my-3">
         <div
           ref={qrRef}
-          className="bg-white p-6 rounded-[2rem] border border-black/5 shadow-2xl transition-all duration-300"
+          className="bg-white p-6 rounded-[2rem] border border-black/5 shadow-2xl transition-all duration-300 flex flex-col items-center"
         >
           <QRCodeCanvas
             value={qrValue}
@@ -80,6 +83,13 @@ export function QRCodeGenerator({ device, isConfirmed }: QRCodeGeneratorProps) {
               excavate: true,
             }}
           />
+          {device.device_id && (
+            <div className="mt-3 text-center">
+              <p className="text-[14px] font-bold text-black tracking-wider" style={{ fontFamily: 'Times New Roman, serif' }}>
+                {device.device_id}
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
