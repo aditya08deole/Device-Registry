@@ -4,6 +4,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "EvaraTech - Device Registration Portal",
   description: "Secure IoT Device Identity Manifest Generator",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+  },
 };
 
 export default function RootLayout({

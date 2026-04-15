@@ -84,53 +84,53 @@ function DeviceViewContent() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 to-white" style={{ fontFamily: 'Times New Roman, serif' }}>
       {/* Top Bar */}
-      <div className="w-full border-b border-black/5 px-6 py-4 flex items-center justify-between bg-white/50 backdrop-blur-sm">
-        <div className="flex items-center gap-3">
+      <div className="w-full border-b border-black/5 px-4 py-3 md:px-6 md:py-4 flex items-center justify-between bg-white/50 backdrop-blur-sm">
+        <div className="flex items-center gap-2 md:gap-3">
           <Image
             src="/evara-logo.png"
             alt="EvaraTech"
             width={32}
             height={32}
-            className="h-8 w-auto object-contain"
+            className="h-6 md:h-8 w-auto object-contain"
             priority
           />
-          <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-black/50">EvaraTech</span>
+          <span className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.3em] text-black/50">EvaraTech</span>
         </div>
-        <span className="text-[9px] font-bold uppercase tracking-widest text-black/30">Device Scan</span>
+        <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-black/30">Device Scan</span>
       </div>
 
       {/* Hero */}
-      <div className="px-6 pt-10 pb-6 border-b border-black/5 bg-white/30">
-        <div className="flex flex-col md:flex-row gap-6 items-start">
-          <div className="w-full md:w-1/3">
-            <div className="aspect-square rounded-2xl overflow-hidden border border-black/10 shadow-xl bg-gray-50">
+      <div className="px-4 pt-6 pb-4 md:px-6 md:pt-8 md:pb-6 border-b border-black/5 bg-white/30">
+        <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-start">
+          <div className="w-full md:w-24 flex-shrink-0">
+            <div className="aspect-square rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-lg bg-gray-50">
               <Image
                 src={getDeviceImage(device.device_type)}
                 alt={device.device_type}
                 fill
                 className="object-cover"
-                sizes="(max-width: 768px) 100vw, 33vw"
+                sizes="(max-width: 768px) 100vw, 96px"
               />
             </div>
           </div>
-          <div className="flex-1">
-            <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-black/30 mb-2">REGISTERED DEVICE</p>
-            <h1 className="text-4xl md:text-5xl font-bold text-black uppercase tracking-tight leading-none mb-4">
+          <div className="flex-1 min-w-0">
+            <p className="text-[8px] font-bold uppercase tracking-[0.4em] text-black/30 mb-1">REGISTERED DEVICE</p>
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-black uppercase tracking-tight leading-none mb-2 md:mb-3">
               {device.name || 'UNNAMED NODE'}
             </h1>
-            <div className="flex flex-wrap items-center gap-3">
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest ${statusCfg.color}`}>
-                <span className={`w-2 h-2 rounded-full ${statusCfg.dot}`}></span>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className={`inline-flex items-center gap-2 px-2 md:px-3 py-1 rounded-full text-[8px] md:text-[9px] font-bold uppercase tracking-widest ${statusCfg.color}`}>
+                <span className={`w-1 h-1 md:w-1.5 md:h-1.5 rounded-full ${statusCfg.dot}`}></span>
                 {statusCfg.label}
               </div>
-              <span className="text-[10px] font-bold text-black/20 uppercase tracking-widest font-mono">{device.device_id}</span>
+              <span className="text-[8px] md:text-[9px] font-bold text-black/20 uppercase tracking-widest font-mono">{device.device_id}</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Fields */}
-      <div className="px-6 py-4 max-w-4xl mx-auto">
+      <div className="px-4 py-3 md:px-6 md:py-4 max-w-4xl mx-auto">
         <Field label="Device Type" value={device.device_type} />
         {device.location && <Field label="Location" value={device.location} />}
         {device.latitude && device.longitude && (
@@ -141,24 +141,24 @@ function DeviceViewContent() {
       </div>
 
       {/* Footer */}
-      <div className="px-6 py-8 mt-4 border-t border-black/5 text-center space-y-4 max-w-4xl mx-auto">
+      <div className="px-4 py-6 md:px-6 md:py-8 mt-4 border-t border-black/5 text-center space-y-3 md:space-y-4 max-w-4xl mx-auto">
         <div className="space-y-2">
           <a
             href="https://evaratech.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[12px] font-bold text-black uppercase tracking-[0.3em] hover:text-black/70 transition-colors"
+            className="text-[11px] md:text-[12px] font-bold text-black uppercase tracking-[0.3em] hover:text-black/70 transition-colors"
           >
             evaratech.com
           </a>
         </div>
         <div className="space-y-1">
-          <p className="text-[10px] font-bold text-black/60 uppercase tracking-[0.2em]">
+          <p className="text-[9px] md:text-[10px] font-bold text-black/60 uppercase tracking-[0.2em]">
             For any help or complaint
           </p>
           <a
             href="tel:9130190160"
-            className="text-[14px] font-mono font-bold text-black uppercase tracking-wider hover:text-black/70 transition-colors"
+            className="text-[12px] md:text-[14px] font-mono font-bold text-black uppercase tracking-wider hover:text-black/70 transition-colors"
           >
             9130190160
           </a>
