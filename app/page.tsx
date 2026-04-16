@@ -33,7 +33,7 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <main className="h-screen w-full overflow-hidden flex flex-col items-center bg-gradient-to-br from-gray-50 to-white p-2 md:p-4 select-none">
+    <main className="min-h-screen w-full flex flex-col items-center bg-gradient-to-br from-gray-50 to-white p-2 md:p-4 select-none">
       {/* Header Branding */}
       <div className="w-full max-w-7xl flex flex-col items-center mb-3 md:mb-4 gap-1 md:gap-1.5 shrink-0">
         <Image
@@ -52,9 +52,9 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-5 items-stretch flex-1 min-h-0">
+      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-5 items-stretch">
         {/* Left Column: Form */}
-        <div className="col-span-1 lg:col-span-7 flex flex-col min-h-0">
+        <div className="col-span-1 lg:col-span-7">
           <RegistrationForm
             onUpdate={handleDeviceUpdate}
             currentDevice={device}
@@ -64,7 +64,7 @@ export default function Dashboard() {
         </div>
 
         {/* Right Column: QR Profile */}
-        <div className="col-span-1 lg:col-span-5 flex flex-col min-h-0">
+        <div className="col-span-1 lg:col-span-5">
           <QRCodeGenerator device={device} isConfirmed={isConfirmed} />
         </div>
       </div>

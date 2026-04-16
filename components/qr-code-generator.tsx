@@ -49,7 +49,7 @@ export function QRCodeGenerator({ device, isConfirmed }: QRCodeGeneratorProps) {
   }
 
   return (
-    <div className="glass-panel-gray rounded-[1rem] md:rounded-[1.5rem] p-4 md:p-6 shadow-sm h-full flex flex-col items-center justify-between relative overflow-hidden border border-black/10">
+    <div className="glass-panel-gray rounded-[1rem] md:rounded-[1.5rem] p-4 md:p-6 shadow-sm flex flex-col items-center justify-between relative border border-black/10">
 
       {/* Header */}
       <div className="w-full z-10">

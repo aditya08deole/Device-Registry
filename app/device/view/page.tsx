@@ -101,18 +101,7 @@ function DeviceViewContent() {
 
       {/* Hero */}
       <div className="px-4 pt-6 pb-4 md:px-6 md:pt-8 md:pb-6 border-b border-black/5 bg-white/30">
-        <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-start">
-          <div className="w-full md:w-24 flex-shrink-0">
-            <div className="aspect-square rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-lg bg-gray-50">
-              <Image
-                src={getDeviceImage(device.device_type)}
-                alt={device.device_type}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 96px"
-              />
-            </div>
-          </div>
+        <div className="flex flex-col gap-3 md:gap-4 items-start">
           <div className="flex-1 min-w-0">
             <p className="text-[8px] font-bold uppercase tracking-[0.4em] text-black/30 mb-1">REGISTERED DEVICE</p>
             <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-black uppercase tracking-tight leading-none mb-2 md:mb-3">
