@@ -36,7 +36,38 @@ export function QRCodeGenerator({ device, isConfirmed }: QRCodeGeneratorProps) {
   const downloadQRAsPNG = () => {
     const canvas = qrRef.current?.querySelector('canvas')
     if (canvas) {
-      const dataUrl = canvas.toDataURL('image/png', 1.0)
+      // Create a new canvas to combine QR code and device ID
+      const qrCanvas = canvas as HTMLCanvasElement
+      const combinedCanvas = document.createElement('canvas')
+      const ctx = combinedCanvas.getContext('2d')
+      
+      if (!ctx) return
+
+      // Set dimensions for the combined canvas (QR + space for text)
+      const qrSize = qrCanvas.width
+      const padding = 24
+      const textHeight = 40
+      combinedCanvas.width = qrSize + (padding * 2)
+      combinedCanvas.height = qrSize + padding + textHeight + padding
+
+      // Fill background with white
+      ctx.fillStyle = '#ffffff'
+      ctx.fillRect(0, 0, combinedCanvas.width, combinedCanvas.height)
+
+      // Draw the QR code centered
+      ctx.drawImage(qrCanvas, padding, padding)
+
+      // Draw device ID text below the QR code
+      if (device.device_id) {
+        ctx.fillStyle = '#000000'
+        ctx.font = 'bold 14px Times New Roman, serif'
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.fillText(device.device_id, combinedCanvas.width / 2, qrSize + padding + (textHeight / 2))
+      }
+
+      // Download the combined image
+      const dataUrl = combinedCanvas.toDataURL('image/png', 1.0)
       const link = document.createElement('a')
       const deviceType = device.device_type || 'Unknown'
       const deviceId = device.device_id || 'NoID'
